@@ -1,24 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
+    <>
+      <hgroup>
+        <h1>md2html</h1>
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          A markdown-to-HTML transpiler that support code block syntax
+          highlighting.
         </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      </hgroup>
+      <p>Here's a placeholder paragraph.</p>
+    </>
   );
 }
 
