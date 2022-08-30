@@ -1,5 +1,4 @@
 import MDToHTML from './MDToHTML';
-import './App.css';
 
 function App() {
   return (
@@ -11,10 +10,7 @@ function App() {
           highlighting.
         </p>
       </hgroup>
-      <p>
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        Here's a placeholder paragraph with an <a href='#'>example link</a>.
-      </p>
+
       <MDToHTML />
     </>
   );
