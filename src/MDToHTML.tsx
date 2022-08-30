@@ -1,7 +1,19 @@
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
-import { FormEvent } from 'react';
+import { type FormEvent, useState, ChangeEvent } from 'react';
 import './MDToHTML.css';
+
+const DEFAULT_INPUT =
+  '# Sample Markdown\n\n' +
+  '1. Enter some content here ...\n' +
+  "2. ... and it'll be converted to HTML.\n\n" +
+  '```ts\n' +
+  'function sayHi(name: string): string {\n' +
+  // eslint-disable-next-line no-template-curly-in-string
+  '  return `Hi, ${name}.`;\n' +
+  '}\n\n' +
+  "console.log(sayHi('Person'));\n" +
+  '```\n';
 
 function convertMDToHTML(md: string, doHighlighting = true): string {
   function highlight(str: string, lang: string) {
@@ -32,64 +44,53 @@ function convertMDToHTML(md: string, doHighlighting = true): string {
 }
 
 function MDToHTML() {
+  const [input, setInput] = useState(DEFAULT_INPUT);
+  const [doHighlighting, setDoHighlighting] = useState(true);
+  const [output, setOutput] = useState('');
+
+  function handleInputMDChange(evt: ChangeEvent<HTMLTextAreaElement>): void {
+    setInput(evt.currentTarget.value);
+  }
+
+  function handleDoHighlightingChange(
+    evt: ChangeEvent<HTMLInputElement>
+  ): void {
+    setDoHighlighting(!doHighlighting);
+  }
+
   function handleConvertSubmit(evt: FormEvent<HTMLFormElement>): void {
     evt.preventDefault();
 
-    if (evt.currentTarget instanceof HTMLFormElement) {
-      const mdInputElt = evt.currentTarget.elements.namedItem('md');
-      const htmlOutputElt = evt.currentTarget.elements.namedItem('html');
-      const highlightElt = evt.currentTarget.elements.namedItem('highlight');
-
-      if (!(mdInputElt instanceof HTMLTextAreaElement)) {
-        throw new Error('Input field not found.');
-      }
-      if (!(htmlOutputElt instanceof HTMLOutputElement)) {
-        throw new Error('Output field not found.');
-      }
-      if (
-        !(
-          highlightElt instanceof HTMLInputElement &&
-          highlightElt.type === 'checkbox'
-        )
-      ) {
-        throw new Error('Highlight checkbox not found.');
-      }
-
-      const mdInput = mdInputElt.value;
-      htmlOutputElt.value = convertMDToHTML(mdInput, highlightElt.checked);
-    }
+    const htmlOutput = convertMDToHTML(input, doHighlighting);
+    setOutput(htmlOutput);
   }
 
   return (
     <form className='mdToHTMLForm' onSubmit={handleConvertSubmit}>
+      <label htmlFor='inputMD'>Input (Markdown):</label>
       <textarea
-        name='md'
+        name='inputMD'
+        value={input}
+        onChange={handleInputMDChange}
         cols={80}
         rows={20}
-        defaultValue={
-          '# Sample Markdown\n\n' +
-          '1. Enter some content here ...\n' +
-          "2. ... and it'll be converted to HTML.\n\n" +
-          '```ts\n' +
-          'function sayHi(name: string): string {\n' +
-          // eslint-disable-next-line no-template-curly-in-string
-          '  return `Hi, ${name}.`;\n' +
-          '}\n\n' +
-          "console.log(sayHi('Person'));\n" +
-          '```\n'
-        }
+        id='inputMD'
       />
       <input
-        type='checkbox'
         name='highlight'
+        type='checkbox'
+        checked={doHighlighting}
+        onChange={handleDoHighlightingChange}
         id='highlight'
-        defaultChecked={true}
       />
       <label htmlFor='highlight'>Highlight syntax in code blocks</label>
       <button type='submit'>Convert</button>
+      <label htmlFor='outputHTML'>Output (HTML):</label>
       <pre>
         <code>
-          <output name='html' />
+          <output name='outputHTML' id='outputHTML'>
+            {output}
+          </output>
         </code>
       </pre>
     </form>
