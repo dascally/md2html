@@ -66,33 +66,43 @@ function MDToHTML() {
   }
 
   return (
-    <form className='mdToHTMLForm' onSubmit={handleConvertSubmit}>
-      <label htmlFor='inputMD'>Input (Markdown):</label>
-      <textarea
-        name='inputMD'
-        value={input}
-        onChange={handleInputMDChange}
-        cols={80}
-        rows={20}
-        id='inputMD'
-      />
-      <input
-        name='highlight'
-        type='checkbox'
-        checked={doHighlighting}
-        onChange={handleDoHighlightingChange}
-        id='highlight'
-      />
-      <label htmlFor='highlight'>Highlight syntax in code blocks</label>
-      <button type='submit'>Convert</button>
-      <label htmlFor='outputHTML'>Output (HTML):</label>
-      <pre>
-        <code>
-          <output name='outputHTML' id='outputHTML'>
-            {output}
-          </output>
-        </code>
-      </pre>
+    <form className='mdToHTML' onSubmit={handleConvertSubmit}>
+      <div className='mdToHTML__inputContainer'>
+        <div className='mdToHTML__inputControl'>
+          <label htmlFor='inputMD'>Input (Markdown):</label>
+          <textarea
+            name='inputMD'
+            value={input}
+            onChange={handleInputMDChange}
+            cols={80}
+            rows={20}
+            id='inputMD'
+          />
+        </div>
+        <div className='mdToHTML__convertControl'>
+          <div>
+            <input
+              name='highlight'
+              type='checkbox'
+              checked={doHighlighting}
+              onChange={handleDoHighlightingChange}
+              id='highlight'
+            />
+            <label htmlFor='highlight'>Highlight syntax in code blocks</label>
+          </div>
+          <button type='submit'>Convert</button>
+        </div>
+      </div>
+      <div className='mdToHTML__outputContainer'>
+        <label htmlFor='outputHTML'>Output (HTML):</label>
+        <pre className='mdToHTML__outputControl'>
+          <code>
+            <output name='outputHTML' id='outputHTML'>
+              {output}
+            </output>
+          </code>
+        </pre>
+      </div>
     </form>
   );
 }

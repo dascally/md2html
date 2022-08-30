@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 :root {
   --background-color: hsl(30, 100%, 97%);
   --color: hsl(0, 0%, 12%);
@@ -8,7 +12,7 @@
 
 body {
   max-width: 1200px;
-  margin: 1rem auto;
+  margin: 1rem;
 
   background: var(--background-color);
   color: var(--color);
@@ -23,6 +27,7 @@ body {
 @media screen and (min-width: 500px) {
   body {
     width: 80%;
+    margin: 1rem auto;
   }
 }
 
@@ -57,7 +62,8 @@ hgroup > p {
   font-style: italic;
 }
 
-p {
+p,
+pre {
   margin: 0 0 1rem;
 }
 
