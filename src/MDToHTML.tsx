@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
-import { type FormEvent, useState, ChangeEvent } from 'react';
+import { type FormEvent, useState, ChangeEvent, PointerEvent } from 'react';
 import './MDToHTML.css';
 
 const DEFAULT_INPUT =
@@ -65,6 +65,12 @@ function MDToHTML() {
     setOutput(htmlOutput);
   }
 
+  function handleCopyClick(evt: PointerEvent<HTMLButtonElement>) {
+    evt.preventDefault();
+
+    navigator.clipboard.writeText(output);
+  }
+
   return (
     <form className='mdToHTML' onSubmit={handleConvertSubmit}>
       <div className='mdToHTML__inputContainer'>
@@ -79,7 +85,7 @@ function MDToHTML() {
             id='inputMD'
           />
         </div>
-        <div className='mdToHTML__convertControl'>
+        <div className='mdToHTML__controlsBar'>
           <div>
             <input
               name='highlight'
@@ -94,14 +100,19 @@ function MDToHTML() {
         </div>
       </div>
       <div className='mdToHTML__outputContainer'>
-        <label htmlFor='outputHTML'>Output (HTML):</label>
-        <pre className='mdToHTML__outputControl'>
-          <code>
-            <output name='outputHTML' id='outputHTML'>
-              {output}
-            </output>
-          </code>
-        </pre>
+        <div className='mdToHTML__outputControl'>
+          <label htmlFor='outputHTML'>Output (HTML):</label>
+          <pre>
+            <code>
+              <output name='outputHTML' id='outputHTML'>
+                {output}
+              </output>
+            </code>
+          </pre>
+        </div>
+        <div className='mdToHTML__controlsBar'>
+          <button onClick={handleCopyClick}>Copy</button>
+        </div>
       </div>
     </form>
   );
